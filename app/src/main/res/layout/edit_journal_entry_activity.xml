@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.Journal.Toolbar.White"
+        android:id="@+id/toolbar"
+        app:navigationIcon="?attr/homeAsUpIndicator"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title"
+            android:id="@+id/edit_title"
+            android:gravity="top|start"
+            android:padding="10dp"
+            android:background="@null"
+            android:layout_alignParentTop="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/edit_text"
+            android:gravity="top|start"
+            android:padding="10dp"
+            android:background="@null"
+            android:layout_below="@id/edit_title"
+            android:layout_above="@id/text_date_added"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_date_added"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="10dp"
+            android:textStyle="italic"
+            android:layout_above="@id/text_date_editted" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_date_editted"
+            android:paddingHorizontal="10dp"
+            android:paddingBottom="10dp"
+            android:textStyle="italic"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
