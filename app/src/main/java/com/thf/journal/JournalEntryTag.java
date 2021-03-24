@@ -8,7 +8,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class JournalEntryTag implements Parcelable {
+public class JournalEntryTag {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -23,36 +23,6 @@ public class JournalEntryTag implements Parcelable {
         this.name = name;
         this.color = color;
     }
-
-    protected JournalEntryTag(Parcel in) {
-        id = in.readInt();
-        name = in.readString();
-        color = in.readInt();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(name);
-        dest.writeInt(color);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<JournalEntryTag> CREATOR = new Creator<JournalEntryTag>() {
-        @Override
-        public JournalEntryTag createFromParcel(Parcel in) {
-            return new JournalEntryTag(in);
-        }
-
-        @Override
-        public JournalEntryTag[] newArray(int size) {
-            return new JournalEntryTag[size];
-        }
-    };
 
     public int getColor() {
         return color;

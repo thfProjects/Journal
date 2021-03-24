@@ -22,6 +22,11 @@
             android:label="">
 
         </activity>
+        <activity android:name=".EditTagsActivity"
+            android:theme="@style/Theme.Journal.NoActionBar"
+            android:label="Edit tags">
+
+        </activity>
     </application>
 
 </manifest>

@@ -69,6 +69,10 @@ public class MainViewModel extends AndroidViewModel {
         taskRunner.executeAsync(()->{appDatabase.journalEntryDAO().delete(journalEntry); return null;}, (result)->{});
     }
 
+    public void deleteById(int id){
+        taskRunner.executeAsync(()->{appDatabase.journalEntryDAO().deleteById(id); return null;}, (result)->{});
+    }
+
     public LiveData<List<JournalEntryWithTag>> getAllEntries(){
         return entries;
     }
@@ -94,13 +98,21 @@ public class MainViewModel extends AndroidViewModel {
         tagFilters.setValue(tagFilters.getValue());
     }
 
-    public void removetagFilter(int id){
+    public void removeTagFilter(int id){
         tagFilters.getValue().remove((Integer) id);
         tagFilters.setValue(tagFilters.getValue());
     }
 
+    public boolean hasTagFilter(int id){
+        return tagFilters.getValue().contains(id);
+    }
+
     public void setArchivedFilter(boolean archived){
         this.archivedFilter.setValue(archived);
+    }
+
+    public boolean getArchivedFilter(){
+        return archivedFilter.getValue();
     }
 
     public void saveIsListLayout(){
@@ -112,6 +124,11 @@ public class MainViewModel extends AndroidViewModel {
     public void archiveJournalEntry(JournalEntry journalEntry){
         journalEntry.setArchived(true);
         taskRunner.executeAsync(()->{appDatabase.journalEntryDAO().update(journalEntry); return null;}, (result)->{});
+    }
+
+    public void unarchiveJournalEntry(JournalEntry journalEntry){
+        journalEntry.setArchived(false);
+        taskRunner.executeAsync(()->{appDatabase.journalEntryDAO().update(journalEntry); return null;},(result)->{});
     }
 
     public class Filter{

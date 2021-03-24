@@ -15,10 +15,13 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import static androidx.room.ForeignKey.SET_DEFAULT;
+
 @Entity(foreignKeys = @ForeignKey(
         entity = JournalEntryTag.class,
         parentColumns = "id",
-        childColumns = "tag_id"
+        childColumns = "tag_id",
+        onDelete = SET_DEFAULT
 ))
 @TypeConverters(DateConverters.class)
 public class JournalEntry implements Parcelable{
@@ -30,7 +33,7 @@ public class JournalEntry implements Parcelable{
     @NonNull
     private String text;
 
-    @ColumnInfo
+    @ColumnInfo(defaultValue = "1")
     private int tag_id;
 
     @ColumnInfo(defaultValue = "")

@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/tagstitle"
-        android:title="Tags">
+    <item
+        android:id="@+id/tagstitle"
+        android:title="Tags"
+        app:actionViewClass="android.widget.EditText"
+        app:showAsAction="always"
+        >
         <menu>
+            <group
+                android:id="@+id/tags">
 
+            </group>
+
+            <item
+                android:id="@+id/edit_tags"
+                android:title="Edit tags"
+                android:icon="@drawable/ic_baseline_edit_24"
+                android:orderInCategory="1"/>
         </menu>
     </item>
 

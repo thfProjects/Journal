@@ -25,6 +25,9 @@ public abstract class JournalEntryDAO {
     @Update
     abstract void update(JournalEntry journalEntry);
 
+    @Query("DELETE FROM journalentry WHERE id = :id")
+    abstract void deleteById(int id);
+
     @Transaction
     @Query("SELECT * FROM journalentry")
     abstract LiveData<List<JournalEntryWithTag>> getAll();

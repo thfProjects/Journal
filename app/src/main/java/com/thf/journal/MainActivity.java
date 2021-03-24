@@ -3,10 +3,12 @@ package com.thf.journal;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.HasDefaultViewModelProviderFactory;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,6 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -23,6 +28,8 @@ import android.os.Bundle;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,13 +43,15 @@ import androidx.appcompat.widget.SearchView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements DeleteDialogFragment.DeleteDialogListener {
 
     private MainViewModel mainViewModel;
 
@@ -114,13 +123,18 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onChanged(List<JournalEntryTag> journalEntryTags) {
                 Menu menu = navigationView.getMenu().findItem(R.id.tagstitle).getSubMenu();
-                menu.clear();
+                menu.removeGroup(R.id.tags);
 
                 for(JournalEntryTag tag : journalEntryTags){
-                    menu.add(Menu.NONE, tag.getId(), Menu.NONE, tag.getName()).setIcon(R.drawable.ic_baseline_label_24).setCheckable(true);
+                    menu.add(R.id.tags, tag.getId(), Menu.NONE, tag.getName())
+                            .setIcon(R.drawable.ic_baseline_label_24)
+                            .setCheckable(true)
+                            .setChecked(mainViewModel.hasTagFilter(tag.getId())); //for rotation
                 }
             }
         });
+
+        navigationView.getMenu().findItem(R.id.archive).setChecked(mainViewModel.getArchivedFilter()); //for rotation
 
         mainViewModel.setQueryFilter(""); //get all on start
     }
@@ -182,19 +196,21 @@ public class MainActivity extends AppCompatActivity{
     NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            if(item.getItemId() == R.id.archive){
-                item.setChecked(!item.isChecked());
-                mainViewModel.setArchivedFilter(item.isChecked());
-                return false;
-            } else {
+            if(item.getGroupId() == R.id.tags){
                 item.setChecked(!item.isChecked());
                 if (item.isChecked()) {
                     mainViewModel.addTagFilter(item.getItemId());
                 } else {
-                    mainViewModel.removetagFilter(item.getItemId());
+                    mainViewModel.removeTagFilter(item.getItemId());
                 }
-                return false;
+            }else if(item.getItemId() == R.id.archive){
+                item.setChecked(!item.isChecked());
+                mainViewModel.setArchivedFilter(item.isChecked());
+            }else if(item.getItemId() == R.id.edit_tags){
+                Intent intent = new Intent(MainActivity.this, EditTagsActivity.class);
+                startActivity(intent);
             }
+            return false;
         }
     };
 
@@ -214,13 +230,40 @@ public class MainActivity extends AppCompatActivity{
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            JournalEntry journalEntry = entryAdapter.getEntry(position).journalEntry;
             if(direction == ItemTouchHelper.RIGHT){
-                mainViewModel.archiveJournalEntry(entryAdapter.getEntry(viewHolder.getAdapterPosition()).journalEntry);
+                if(journalEntry.getArchived()) {
+                    DeleteDialogFragment dialogFragment = DeleteDialogFragment.newInstance(position, journalEntry.getId(), "Permanently delete this entry?");
+                    dialogFragment.show(getSupportFragmentManager(), "DeleteJournalEntryDialogFragment");
+                }
+                else {
+                    mainViewModel.archiveJournalEntry(journalEntry);
+                    Snackbar.make(drawerLayout, "Entry archived", Snackbar.LENGTH_LONG)
+                            .setAction("Undo",(v) -> mainViewModel.unarchiveJournalEntry(journalEntry))
+                            .show();
+                }
             }else{
-                entryAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
+                if(journalEntry.getArchived()) {
+                    mainViewModel.unarchiveJournalEntry(journalEntry);
+                    Snackbar.make(drawerLayout, "Entry unarchived", Snackbar.LENGTH_LONG)
+                            .setAction("Undo",(v) -> mainViewModel.archiveJournalEntry(journalEntry))
+                            .show();
+                }
+                else entryAdapter.notifyItemChanged(position);
             }
         }
     });
+
+    @Override
+    public void onDeletePositiveClick(int id) {
+        mainViewModel.deleteById(id);
+    }
+
+    @Override
+    public void onDeleteNegativeClick(int position) {
+        entryAdapter.notifyItemChanged(position);
+    }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override

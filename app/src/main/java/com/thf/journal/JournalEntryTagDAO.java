@@ -24,6 +24,9 @@ public interface JournalEntryTagDAO {
     @Query("SELECT * FROM journalentrytag")
     LiveData<List<JournalEntryTag>> getAll();
 
-    @Query("SELECT name FROM journalentrytag")
-    List<String> getAllNames();
+    @Query("SELECT * FROM journalentrytag WHERE NOT id = 1")
+    LiveData<List<JournalEntryTag>> getAllWithoutDefault();
+
+    @Query("DELETE FROM journalentrytag WHERE id = :id")
+    void deleteById(int id);
 }

@@ -43,7 +43,7 @@
                 android:id="@+id/entries"
                 android:divider="@null"
                 android:dividerHeight="0dp"
-                android:padding="5dp"
+                android:padding="@dimen/padding_small"
                 android:background="#dddddd"
                 android:clipToPadding="false"
                 android:scrollbars="vertical"
@@ -51,7 +51,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="@dimen/padding_small"
                 android:background="@drawable/top_shadow"
                 android:layout_alignBottom="@id/entries"/>
 
@@ -59,9 +59,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/newentry"
-                android:text="write something..."
+                android:text="Write something..."
+                android:textSize="20sp"
+                android:fontFamily="cursive"
+                android:textAllCaps="false"
                 android:gravity="start|center_vertical"
-                android:textColor="@android:color/secondary_text_dark"
+                android:paddingStart="@dimen/new_entry_button_padding_left"
+                android:paddingLeft="@dimen/new_entry_button_padding_left"
+                android:textColor="@android:color/tertiary_text_dark"
                 android:background="@drawable/new_entry_button_background"
                 app:backgroundTint="@color/white"
                 android:layout_alignParentBottom="true" />

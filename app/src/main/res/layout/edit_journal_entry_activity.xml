@@ -22,7 +22,7 @@
             android:hint="Title"
             android:id="@+id/edit_title"
             android:gravity="top|start"
-            android:padding="10dp"
+            android:padding="@dimen/padding_large"
             android:background="@null"
             android:layout_alignParentTop="true" />
 
@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:id="@+id/edit_text"
             android:gravity="top|start"
-            android:padding="10dp"
+            android:padding="@dimen/padding_large"
             android:background="@null"
             android:layout_below="@id/edit_title"
             android:layout_above="@id/text_date_added"/>
@@ -40,8 +40,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/text_date_added"
-            android:paddingHorizontal="10dp"
-            android:paddingTop="10dp"
+            android:paddingHorizontal="@dimen/padding_large"
+            android:paddingTop="@dimen/padding_large"
             android:textStyle="italic"
             android:layout_above="@id/text_date_editted" />
 
@@ -49,8 +49,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/text_date_editted"
-            android:paddingHorizontal="10dp"
-            android:paddingBottom="10dp"
+            android:paddingHorizontal="@dimen/padding_large"
+            android:paddingBottom="@dimen/padding_large"
             android:textStyle="italic"
             android:layout_alignParentBottom="true"/>
 
