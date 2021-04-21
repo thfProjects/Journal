@@ -8,8 +8,10 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.RawQuery;
 import androidx.room.Transaction;
 import androidx.room.Update;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import java.util.List;
 
@@ -39,6 +41,10 @@ public abstract class JournalEntryDAO {
     @Transaction
     @Query("SELECT * FROM journalentry WHERE text LIKE :query AND archived = :archived")
     abstract LiveData<List<JournalEntryWithTag>> filter(String query, boolean archived);
+
+    @Transaction
+    @RawQuery(observedEntities = JournalEntryWithTag.class)
+    abstract LiveData<List<JournalEntryWithTag>> filter(SupportSQLiteQuery query);
 
     @Transaction
     void upsert(JournalEntry journalEntry){

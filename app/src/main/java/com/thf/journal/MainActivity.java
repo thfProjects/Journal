@@ -51,7 +51,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements DeleteDialogFragment.DeleteDialogListener {
+public class MainActivity extends AppCompatActivity implements DeleteDialogFragment.DeleteDialogListener, SearchByDateDialogFragment.SearchByDateDialogListener {
 
     private MainViewModel mainViewModel;
 
@@ -158,7 +158,12 @@ public class MainActivity extends AppCompatActivity implements DeleteDialogFragm
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.layout){
+        if(id == R.id.date_range){
+            SearchByDateDialogFragment dialogFragment = new SearchByDateDialogFragment();
+            dialogFragment.show(getSupportFragmentManager(), "Date range fragment");
+            return true;
+        }
+        else if(id == R.id.layout){
             if(mainViewModel.getIsListLayout()){
                 recyclerView.setLayoutManager(staggeredGridLayoutManager);
                 mainViewModel.setIsListLayout(false);
@@ -171,6 +176,11 @@ public class MainActivity extends AppCompatActivity implements DeleteDialogFragm
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSearchByDatePositiveClick() {
+
     }
 
     @Override

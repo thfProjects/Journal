@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/date_range"
+        android:icon="@drawable/ic_baseline_date_range_24"
+        android:title="date_range"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/layout"
         android:title="layout"
         app:showAsAction="always"/>

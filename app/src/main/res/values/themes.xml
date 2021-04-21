@@ -23,6 +23,7 @@
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/white</item>
         <item name="android:background">?attr/colorPrimary</item>
+        <item name="searchViewStyle">@style/Theme.Journal.Toolbar.SearchView</item>
     </style>
 
     <style name="Theme.Journal.Toolbar.White">
@@ -30,5 +31,14 @@
         <item name="android:textColorSecondary">@android:color/secondary_text_light</item>
         <item name="android:background">@color/white</item>
         <item name="iconTint">@android:color/secondary_text_light</item>
+    </style>
+
+    <style name="Theme.Journal.Toolbar.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="searchIcon">@null</item>
+        <item name="queryBackground">@null</item>
+    </style>
+
+    <style name="Theme.Journal.Toolbar.SearchView.AutoCompleteTextView" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="background">@null</item>
     </style>
 </resources>
