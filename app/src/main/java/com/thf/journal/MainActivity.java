@@ -39,6 +39,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.SearchView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -159,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements DeleteDialogFragm
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.date_range){
-            SearchByDateDialogFragment dialogFragment = new SearchByDateDialogFragment();
+            SearchByDateDialogFragment dialogFragment = SearchByDateDialogFragment.newInstance(mainViewModel.getDateFilter());
             dialogFragment.show(getSupportFragmentManager(), "Date range fragment");
             return true;
         }
@@ -179,8 +181,13 @@ public class MainActivity extends AppCompatActivity implements DeleteDialogFragm
     }
 
     @Override
-    public void onSearchByDatePositiveClick() {
+    public void onSearchByDatePositiveClick(Long addedFrom, Long addedto) {
+        mainViewModel.setDateFilter(addedFrom, addedto);
+    }
 
+    @Override
+    public void onSearchByDateNegativeClick() {
+        mainViewModel.setDateFilter(null, null);
     }
 
     @Override
